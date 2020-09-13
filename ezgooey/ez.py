@@ -45,7 +45,18 @@ except ImportError:
 
 
 def flex_add_argument(f):
-    """Make the add_argument accept (and ignore) the widget option."""
+    """Make add_argument accept or ignore gooey-specific options."""
+
+    def f_decorated(*args, **kwargs):
+        kwargs.pop('widget', None)
+        kwargs.pop('gooey_options', None)
+        return f(*args, **kwargs)
+
+    return f_decorated
+
+
+def flex_add_argument_group(f):
+    """Make add_argument_group accept or ignore gooey-specific options."""
 
     def f_decorated(*args, **kwargs):
         kwargs.pop('widget', None)
@@ -58,11 +69,16 @@ def flex_add_argument(f):
 argparse._ActionsContainer.add_argument = flex_add_argument(
     argparse.ArgumentParser.add_argument)
 
+argparse._ActionsContainer.add_argument_group = flex_add_argument_group(
+    argparse.ArgumentParser.add_argument_group)
+
 if gooey is None or len(sys.argv) > 1:
     ArgumentParser = argparse.ArgumentParser
 
-    def ezgooey(f):
-        return f
+    def ezgooey(**kwargs):
+        def decorator_ezgooey(f):
+            return f
+        return decorator_ezgooey
 else:
     ArgumentParser = gooey.GooeyParser
 
