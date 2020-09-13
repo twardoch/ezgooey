@@ -55,6 +55,7 @@ log.success('success') # Only with adv
 ...
 ```
 """
+__version__ = "1.2.0"
 
 import sys
 from logging import *

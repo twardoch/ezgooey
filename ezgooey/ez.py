@@ -31,7 +31,7 @@ def get_parser():
 ...
 ```
 """
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 import argparse
 import sys
@@ -41,8 +41,9 @@ try:
 except ImportError:
     gooey = None
 
-
 # Monkey-patching a private class…
+
+
 def flex_add_argument(f):
     """Make the add_argument accept (and ignore) the widget option."""
 
@@ -56,7 +57,6 @@ def flex_add_argument(f):
 argparse._ActionsContainer.add_argument = flex_add_argument(
     argparse.ArgumentParser.add_argument)
 
-# Do not run GUI if it is not available or if command-line arguments are given.
 if gooey is None or len(sys.argv) > 1:
     ArgumentParser = argparse.ArgumentParser
 
@@ -64,12 +64,6 @@ if gooey is None or len(sys.argv) > 1:
         return f
 else:
     ArgumentParser = gooey.GooeyParser
-    ezgooey = gooey.Gooey(
-        program_name='Application',
-        suppress_gooey_flag=True,
-        richtext_controls=True,
-        advanced=True,
-        tabbed_groups=True,
-        navigation='Tabbed',
-        optional_cols=1
-    )
+
+    def ezgooey(**kwargs):
+        return gooey.Gooey(**kwargs)
