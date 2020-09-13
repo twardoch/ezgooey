@@ -4,7 +4,8 @@
 
 [Gooey](https://github.com/chriskiehl/Gooey) is a Python package, which lets you turn argparse-based CLI apps into cross-platform GUI apps. [ezgooey.ez](https://github.com/twardoch/ezgooey) makes this even simpler. 
 
-When you start your app without CLI arguments, it'll run in GUI, but if you supply CLI arguments, it'll run as CLI.
+When you start your app without CLI arguments, it’ll run in GUI, but if you supply CLI arguments, it’ll run as CLI. Import, then add the `@ezgooey` decorator to the function where you initialize the `ArgumentParser`.
+
 
 ```python
 from ezgooey.ez import *
