@@ -17,7 +17,20 @@ def get_parser():
         prog='appname',
         description='app description'
     )
-...
+    parser.add_argument(
+        '-a',
+        '--alternative',
+        dest='alt',
+        action='store_true',
+        help='alternative processing',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+    return parser
+
+parser = get_parser()
+opts = parser.parse_args()
 ```
 
 ### Advanced
@@ -31,12 +44,23 @@ CLI_NAME = 'cliapp'
 @ezgooey(
     advanced=True,
     auto_start=False,
+    body_bg_color='#f0f0f0',
+    clear_before_run=False,
     default_size=(800, 600),
     disable_progress_bar_animation=False,
     disable_stop_button=False,
     dump_build_config=False,
+    error_color='#ea7878',
+    footer_bg_color='#f0f0f0',
+    force_stop_is_error=True,
+    fullscreen=False,
     group_by_type=True,
+    header_bg_color='#ffffff',
     header_height=80,
+    header_height=90,
+    header_image_center=False,
+    header_show_subtitle=True,
+    header_show_title=True,
     hide_progress_msg=False,
     image_dir='::gooey/default',
     language='english',
@@ -44,17 +68,30 @@ CLI_NAME = 'cliapp'
     load_build_config=None,
     navigation='Tabbed',
     optional_cols=1,
+    poll_external_updates=False,
     program_description=None,
     program_name=GUI_NAME,
     progress_expr=None,
     progress_regex=None,
     required_cols=1,
+    requires_shell=True,
+    return_to_config=False,
     richtext_controls=True,
     show_failure_modal=True,
+    show_restart_button=True,
+    show_sidebar=False,
+    show_stop_warning=True,
     show_success_modal=False,
+    sidebar_bg_color='#f2f2f2',
+    sidebar_title=None,
     suppress_gooey_flag=True,
     tabbed_groups=False,
     target=None,
+    terminal_font_color='#000000',
+    terminal_font_family=None,
+    terminal_font_size=None,
+    terminal_font_weight=None,
+    terminal_panel_color='#F0F0F0',
     use_legacy_titles=True,
     menu=[{
         'name' : 'Help',
@@ -77,7 +114,120 @@ def get_parser():
         prog=CLI_NAME,
         description='app description'
     )
-...
+
+    parser_g1 = parser.add_argument_group(
+        'Group 1',
+        gooey_options={
+            'show_border': True,
+            'columns'    : 2,
+            'margin_top' : 0
+            }
+        )
+    parser_g1.add_argument(
+        nargs='+',
+        dest='objects',
+        type=str,
+        metavar='objects',
+        help='List of objects',
+        widget='Textarea',
+        gooey_options={
+            'height': 120,
+        }
+    )
+
+    parser_g2 = parser_q.add_mutually_exclusive_group(
+        required=False
+    )
+    parser_g2.add_argument(
+        '-a',
+        '--add',
+        dest='add',
+        action='store_true',
+        help='add objects',
+        gooey_options={
+            'show_help': False,
+        }
+    )
+    parser_g2.add_argument(
+        '-r',
+        '--remove',
+        dest='remove',
+        action='store_true',
+        help='remove objects',
+        gooey_options={
+            'show_help': False,
+        }
+    )
+    parser_g1.add_argument(
+        '-l',
+        '--log',
+        dest='log',
+        action='store_true',
+        help='print log',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+
+    parser_g3 = parser.add_argument_group(
+        'Options',
+        gooey_options={
+        'show_border'   : True,
+        'columns'       : 2,
+        'margin_top'    : 0
+    })
+    parser_g3.add_argument(
+        '-l',
+        '--lang',
+        nargs='*',
+        dest='languages',
+        type=str,
+        metavar='language',
+        help='list of languages',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+    parser_g3.add_argument(
+        '-s',
+        '--sort',
+        dest='sort',
+        type=str,
+        choices=['asc', 'desc'],
+        default='asc',
+        help='sort results',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+    parser_g3.add_argument(
+        '-o',
+        '--output',
+        dest='output',
+        type=str,
+        widget='FileSaver',
+        metavar='output_file',
+        help='save output to this file',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+    parser_g3.add_argument(
+        '-i',
+        '--input-dir',
+        dest='input_dir',
+        type=str,
+        widget='DirChooser',
+        metavar='input_folder',
+        help='read files from this folder',
+        gooey_options={
+            'show_label': False,
+        }
+    )
+    return parser
+
+parser = get_parser()
+opts = parser.parse_args()
 ```
 
 The `@ezgooey` decorator uses the same arguments as the original `@Gooey` decorator. `See [Gooey documentation](https://github.com/chriskiehl/Gooey) for a detailed description.
