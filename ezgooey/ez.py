@@ -64,7 +64,7 @@ if gooey is None or len(sys.argv) > 1:
         return f
 else:
     ArgumentParser = gooey.GooeyParser
-    gui_decorator = gooey.Gooey(
+    ezgooey = gooey.Gooey(
         program_name='Application',
         suppress_gooey_flag=True,
         richtext_controls=True,
