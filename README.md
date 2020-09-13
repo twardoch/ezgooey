@@ -79,6 +79,7 @@ def get_parser():
 ...
 ```
 
+The `@ezgooey` decorator uses the same arguments as the original `@Gooey` decorator. `See [Gooey documentation](https://github.com/chriskiehl/Gooey) for a detailed description.
 
 ## ezgooey.logging
 
