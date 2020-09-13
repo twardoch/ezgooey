@@ -9,14 +9,8 @@ NAME='ezgooey'
 
 readme_file = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'README.md')
-try:
-    from m2r import parse_from_file
-    readme = parse_from_file(readme_file)
-except ImportError:
-    # m2r may not be installed in user environment
-    with open(readme_file) as f:
-        readme = f.read()
-
+with open(readme_file) as f:
+    readme = f.read()
 
 def get_version(*args):
     verstrline = open(os.path.join(NAME,"__init__.py"), "rt").read()
@@ -59,13 +53,12 @@ setup(
     license="MIT",
     description="Simplifies making GUI+CLI apps with Gooey",
     long_description=readme,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     python_requires='>=3.7',
     install_requires=get_requirements('requirements.txt'),
     extras_require={
         'dev': [
-            'twine>=3.2.0',
-            'm2r>=0.2.1'
+            'twine>=3.2.0'
         ]
     },
     packages=find_packages(),
