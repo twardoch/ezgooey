@@ -34,6 +34,7 @@ def get_parser():
 __version__ = '1.1.0'
 
 import argparse
+import sys
 
 try:
     import gooey
@@ -58,7 +59,6 @@ argparse._ActionsContainer.add_argument = flex_add_argument(
 # Do not run GUI if it is not available or if command-line arguments are given.
 if gooey is None or len(sys.argv) > 1:
     ArgumentParser = argparse.ArgumentParser
-
 
     def ezgooey(f):
         return f
