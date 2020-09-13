@@ -49,6 +49,7 @@ def flex_add_argument(f):
 
     def f_decorated(*args, **kwargs):
         kwargs.pop('widget', None)
+        kwargs.pop('gooey_options', None)
         return f(*args, **kwargs)
 
     return f_decorated
