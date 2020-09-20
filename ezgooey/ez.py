@@ -35,6 +35,7 @@ __version__ = '1.2.0'
 
 import argparse
 import sys
+import functools
 
 try:
     import gooey
@@ -75,12 +76,25 @@ argparse._ActionsContainer.add_argument_group = flex_add_argument_group(
 if gooey is None or len(sys.argv) > 1:
     ArgumentParser = argparse.ArgumentParser
 
-    def ezgooey(**kwargs):
-        def decorator_ezgooey(f):
-            return f
+    def ezgooey(*args, **kwargs):
+        if args:
+            return args[0]
+        def decorator_ezgooey(func):
+            return func
         return decorator_ezgooey
+
+    s = """
+    def ezgooey(*args, **kwargs):
+        def decorator_ezgooey(func):
+            @functools.wraps(func)
+            def wrapper_ezgooey(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper_ezgooey
+        return decorator_ezgooey
+"""
+
 else:
     ArgumentParser = gooey.GooeyParser
 
-    def ezgooey(**kwargs):
-        return gooey.Gooey(**kwargs)
+    def ezgooey(*args, **kwargs):
+        return gooey.Gooey(*args, **kwargs)
