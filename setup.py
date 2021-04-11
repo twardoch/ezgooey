@@ -54,7 +54,7 @@ setup(
     description="Simplifies making GUI+CLI apps with Gooey",
     long_description=readme,
     long_description_content_type='text/markdown',
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=get_requirements('requirements.txt'),
     extras_require={
         'dev': [
@@ -65,7 +65,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     keywords='gooey gui cli',
 )
