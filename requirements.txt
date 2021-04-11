@@ -1,2 +1,2 @@
-Gooey>=1.0.4
+Gooey>=1.0.8
 colored>=1.4.2

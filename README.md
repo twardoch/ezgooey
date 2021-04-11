@@ -6,6 +6,10 @@
 
 When you start your app without CLI arguments, it’ll run in GUI, but if you supply CLI arguments, it’ll run as CLI. Import, then add the `@ezgooey` decorator to the function where you initialize the `ArgumentParser`.
 
+## Changelog
+
+- 1.3.3: added support for add_mutually_exclusive_group
+- 1.3.2: fixes
 ### Simple
 
 ```python
@@ -288,11 +292,11 @@ My [PyPolona](https://twardoch.github.io/pypolona/) project is an app, made with
 
 ## Requirements
 
-Requires Python 3.8+
+Requires Python 3.9+
 
 ## License and Copyright
 
-Copyright © 2020 Adam Twardoch. Licensed under the terms of the [MIT license](./LICENSE).
+Copyright © 2021 Adam Twardoch. Licensed under the terms of the [MIT license](./LICENSE).
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
