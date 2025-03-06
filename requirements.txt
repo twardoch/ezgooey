@@ -1,2 +1,3 @@
+wxPython>=4.1.1
 Gooey>=1.0.8
 colored>=1.4.2

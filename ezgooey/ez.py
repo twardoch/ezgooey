@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 ezgooey.ez
 ----------
@@ -31,11 +30,11 @@ def get_parser():
 ...
 ```
 """
-__version__ = '1.2.0'
+
+__version__ = "1.2.0"
 
 import argparse
 import sys
-import functools
 
 try:
     import gooey
@@ -49,8 +48,8 @@ def flex_add_argument(f):
     """Make add_argument accept or ignore gooey-specific options."""
 
     def f_decorated(*args, **kwargs):
-        kwargs.pop('widget', None)
-        kwargs.pop('gooey_options', None)
+        kwargs.pop("widget", None)
+        kwargs.pop("gooey_options", None)
         return f(*args, **kwargs)
 
     return f_decorated
@@ -60,8 +59,8 @@ def flex_add_argument_group(f):
     """Make add_argument_group accept or ignore gooey-specific options."""
 
     def f_decorated(*args, **kwargs):
-        kwargs.pop('widget', None)
-        kwargs.pop('gooey_options', None)
+        kwargs.pop("widget", None)
+        kwargs.pop("gooey_options", None)
         return f(*args, **kwargs)
 
     return f_decorated
@@ -71,21 +70,26 @@ def flex_add_mutually_exclusive_group(f):
     """Make add_mutually_exclusive_group accept or ignore gooey-specific options."""
 
     def f_decorated(*args, **kwargs):
-        kwargs.pop('widget', None)
-        kwargs.pop('gooey_options', None)
+        kwargs.pop("widget", None)
+        kwargs.pop("gooey_options", None)
         return f(*args, **kwargs)
 
     return f_decorated
 
 
 argparse._ActionsContainer.add_argument = flex_add_argument(
-    argparse.ArgumentParser.add_argument)
+    argparse.ArgumentParser.add_argument
+)
 
 argparse._ActionsContainer.add_argument_group = flex_add_argument_group(
-    argparse.ArgumentParser.add_argument_group)
+    argparse.ArgumentParser.add_argument_group
+)
 
-argparse._ActionsContainer.add_mutually_exclusive_group = flex_add_mutually_exclusive_group(
-    argparse.ArgumentParser.add_mutually_exclusive_group)
+argparse._ActionsContainer.add_mutually_exclusive_group = (
+    flex_add_mutually_exclusive_group(
+        argparse.ArgumentParser.add_mutually_exclusive_group
+    )
+)
 
 if gooey is None or len(sys.argv) > 1:
     ArgumentParser = argparse.ArgumentParser
@@ -93,8 +97,10 @@ if gooey is None or len(sys.argv) > 1:
     def ezgooey(*args, **kwargs):
         if args:
             return args[0]
+
         def decorator_ezgooey(func):
             return func
+
         return decorator_ezgooey
 
     s = """

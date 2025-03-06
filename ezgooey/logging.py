@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 ezgooey.logging
 ---------------
@@ -55,17 +54,20 @@ log.success('success') # Only with adv
 ...
 ```
 """
+
 __version__ = "1.2.0"
 
 import sys
 from logging import *
-from colored import stylize, attr, fg
+
+from colored import attr, fg, stylize
 
 SUCCESS = 25
 
 # Set up color logger
 
-class Unbuffered(object):
+
+class Unbuffered:
     def __init__(self, stream):
         self.stream = stream
 
@@ -80,22 +82,23 @@ class Unbuffered(object):
     def __getattr__(self, attr):
         return getattr(self.stream, attr)
 
-def init(level=INFO, format='%(levelname)s%(message)s'):
+
+def init(level=INFO, format="%(levelname)s%(message)s"):
     sys.stdout = Unbuffered(sys.stdout)
 
-    basicConfig(level=level, format=format, )
+    basicConfig(
+        level=level,
+        format=format,
+    )
     addLevelName(DEBUG, stylize("# [DEBUG] ", fg("grey_30")))
-    addLevelName(INFO, '')
-    addLevelName(WARNING, stylize(
-        "# [WARNING] ", fg("dark_orange")))
+    addLevelName(INFO, "")
+    addLevelName(WARNING, stylize("# [WARNING] ", fg("dark_orange")))
     addLevelName(ERROR, stylize("# [ERROR] ", fg("red")))
-    addLevelName(CRITICAL, stylize(
-        "# [FAILURE] ", fg("light_red") + attr("bold")))
-    addLevelName(SUCCESS, stylize(
-        "# [SUCCESS] ", fg("green") + attr("bold")))
+    addLevelName(CRITICAL, stylize("# [FAILURE] ", fg("light_red") + attr("bold")))
+    addLevelName(SUCCESS, stylize("# [SUCCESS] ", fg("green") + attr("bold")))
 
-def logger(name='app'):
+
+def logger(name="app"):
     log = getLogger(name)
-    setattr(log, 'success', lambda message, *
-    args: log._log(SUCCESS, message, args))
+    setattr(log, "success", lambda message, *args: log._log(SUCCESS, message, args))
     return log
