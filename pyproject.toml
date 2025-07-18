@@ -1,0 +1,137 @@
+# this_file: pyproject.toml
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ezgooey"
+authors = [
+    {name = "Adam Twardoch", email = "adam+github@twardoch.com"},
+]
+description = "Simplifies making GUI+CLI apps with Gooey"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+    "Intended Audience :: Developers",
+]
+keywords = ["gooey", "gui", "cli", "argparse", "desktop"]
+dependencies = [
+    "wxPython>=4.1.1",
+    "Gooey>=1.0.8",
+    "colored>=1.4.2",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://twardoch.github.io/ezgooey/"
+Documentation = "https://twardoch.github.io/ezgooey/"
+Repository = "https://github.com/twardoch/ezgooey"
+Issues = "https://github.com/twardoch/ezgooey/issues"
+Changelog = "https://github.com/twardoch/ezgooey/releases"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "black>=22.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "twine>=4.0.0",
+    "wheel>=0.38.0",
+    "build>=0.9.0",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "ezgooey.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ezgooey*"]
+exclude = ["tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--strict-config",
+    "--disable-warnings",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["ezgooey"]
+omit = [
+    "*/tests/*",
+    "*/venv/*",
+    "*/build/*",
+    "*/dist/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

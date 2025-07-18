@@ -13,13 +13,26 @@ with open(readme_file) as f:
 
 
 def get_version(*args):
-    verstrline = open(os.path.join(NAME, "__init__.py")).read()
-    VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
-    mo = re.search(VSRE, verstrline, re.M)
-    if mo:
-        return mo.group(1)
-    else:
-        return "undefined"
+    # Try to import version from version.py first
+    try:
+        import sys
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from version import get_version as get_git_version
+        return get_git_version()
+    except ImportError:
+        pass
+    
+    # Fallback to reading from __init__.py
+    try:
+        verstrline = open(os.path.join(NAME, "__init__.py")).read()
+        VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+        mo = re.search(VSRE, verstrline, re.M)
+        if mo:
+            return mo.group(1)
+    except (IOError, OSError):
+        pass
+    
+    return "0.0.0"
 
 
 def get_requirements(*args):
