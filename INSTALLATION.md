@@ -57,7 +57,7 @@ print(f"ezgooey version: {ezgooey.__version__}")
 from ezgooey.ez import ezgooey, ArgumentParser
 import ezgooey.logging as logging
 
-print("✅ ezgooey is ready to use!")
+print("ezgooey is ready to use!")
 ```
 
 ## Development Installation
@@ -157,13 +157,13 @@ poetry add ezgooey
 
 ## Security Notes
 
-- Installation scripts are provided for convenience but should be reviewed before execution
-- Always verify package integrity when downloading from third-party sources
+- Review installation scripts before running them
+- Verify package integrity when downloading from third-party sources
 - Use virtual environments to isolate dependencies
 
 ## Next Steps
 
-After installation, check out:
+After installation:
 - [README.md](README.md) - Basic usage and examples
 - [DEVELOPMENT.md](DEVELOPMENT.md) - Development guide
 - [Examples](examples/) - Sample applications (if available)

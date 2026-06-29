@@ -1,53 +1,44 @@
 # ezgooey: Create GUIs for CLI Apps Effortlessly
 
-`ezgooey` is a Python utility that simplifies the process of adding a Graphical User Interface (GUI) to your command-line interface (CLI) applications built with `argparse`. It acts as a lightweight wrapper around the powerful [Gooey](https://github.com/chriskiehl/Gooey) library, allowing your application to run as a GUI when no command-line arguments are provided, and as a standard CLI tool when arguments are present.
+`ezgooey` is a Python utility that adds a GUI to `argparse`-based CLI applications. It uses [Gooey](https://github.com/chriskiehl/Gooey) under the hood, switching between GUI and CLI modes automatically based on whether command-line arguments are provided.
 
-Additionally, `ezgooey` includes a convenient logging module that provides colorful, rich-text-compatible output, enhancing the user experience in both GUI and console modes.
+It also includes a logging module with colored output that works in both terminal and GUI environments.
 
 ## Who is `ezgooey` for?
 
-`ezgooey` is for Python developers who:
+Python developers who:
+*   Already use `argparse` for CLI apps
+*   Want a GUI option without rewriting argument parsing
+*   Need to support both GUI and CLI users from one script
+*   Want better-looking logs in both environments
 
-*   Have existing CLI applications built with `argparse`.
-*   Want to provide a user-friendly GUI alternative without rewriting their argument parsing logic.
-*   Need a quick and easy way to make their tools accessible to users who prefer graphical interfaces.
-*   Appreciate a seamless experience where the same script can serve both CLI and GUI users.
-*   Desire enhanced logging output that looks good in both terminals and Gooey's rich text display.
+## Key Features
 
-## Why is `ezgooey` useful?
-
-*   **Simplicity:** Turns an `argparse`-based CLI into a GUI application with a single decorator.
-*   **Flexibility:** Your application automatically switches between GUI and CLI mode based on the presence of command-line arguments. No need for separate scripts or complex logic.
-*   **Enhanced User Experience:** Provides a GUI for users who are not comfortable with the command line, while retaining full CLI functionality for advanced users.
-*   **Rich Logging:** Includes a logging utility that offers colored output in terminals and is compatible with Gooey's rich text display, making logs more readable.
-*   **Minimal Code Changes:** Integrates with your existing `argparse` setup with minimal modifications.
-*   **Leverages Gooey:** Builds upon the robust and feature-rich Gooey library, inheriting its capabilities for UI generation.
+*   **One decorator:** Add `@ezgooey` to your parser function
+*   **Automatic mode switching:** GUI when no args given, CLI otherwise
+*   **Drop-in replacement:** Works with existing `argparse` code
+*   **Colored logging:** Enhanced output for both terminal and Gooey
+*   **Full Gooey support:** All Gooey decorator options work unchanged
 
 ## Installation
-
-You can install `ezgooey` using pip:
 
 ```bash
 pip install ezgooey
 ```
 
-This will also install its dependencies, including `Gooey`, `wxPython`, and `colored`.
+Installs `Gooey`, `wxPython`, and `colored` as dependencies.
 
-## How to Use
+## Usage
 
-`ezgooey` consists of two main components: `ezgooey.ez` for GUI generation and `ezgooey.logging` for enhanced logging.
+### 1. `ezgooey.ez`: Adding GUI to your CLI
 
-### 1. `ezgooey.ez`: Adding a GUI to your CLI
-
-To add a GUI to your `argparse`-based application, simply import `ezgooey` and add the `@ezgooey` decorator to the function where you define your `ArgumentParser`.
-
-**Simple Example:**
+Add the `@ezgooey` decorator to your `ArgumentParser` function:
 
 ```python
 from argparse import ArgumentParser
-from ezgooey.ez import ezgooey # Import the decorator
+from ezgooey.ez import ezgooey
 
-@ezgooey # Add the decorator here
+@ezgooey
 def create_my_parser():
     parser = ArgumentParser(
         prog='my_app',
@@ -56,7 +47,7 @@ def create_my_parser():
     parser.add_argument(
         'filename',
         help='Path to the input file',
-        widget='FileChooser' # Gooey-specific widget
+        widget='FileChooser'
     )
     parser.add_argument(
         '-v', '--verbose',
@@ -72,18 +63,14 @@ if __name__ == '__main__':
     if args.verbose:
         print("Verbose mode enabled.")
     print(f"Processing file: {args.filename}")
-    # Your application logic here
 ```
 
-**Explanation:**
+**Behavior:**
+*   `python script.py` → Opens GUI
+*   `python script.py file.txt -v` → Runs as CLI
+*   The decorator handles all conditional logic
 
-*   If you run `python your_script.py` (without arguments), Gooey will render a GUI based on your `ArgumentParser` definition.
-*   If you run `python your_script.py input.txt -v`, it will run as a standard CLI application.
-*   The `@ezgooey` decorator handles the conditional logic. It accepts all the same arguments as the original `@Gooey` decorator from the Gooey library (e.g., for customizing appearance, layout, etc.).
-
-**Advanced Example with Gooey Options:**
-
-The `@ezgooey` decorator can pass various configuration options directly to Gooey.
+**Advanced example with Gooey options:**
 
 ```python
 from argparse import ArgumentParser
@@ -95,7 +82,7 @@ CLI_NAME = 'mycli'
 @ezgooey(
     program_name=GUI_NAME,
     default_size=(800, 600),
-    navigation='Tabbed', # Example: Use Tabbed navigation
+    navigation='Tabbed',
     menu=[{
         'name' : 'Help',
         'items': [{
@@ -151,149 +138,119 @@ def get_advanced_parser():
 if __name__ == '__main__':
     parser = get_advanced_parser()
     args = parser.parse_args()
-    # Your application logic here
     print(f"Input: {getattr(args, 'input_file', 'N/A')}, Output Dir: {getattr(args, 'output_dir', 'N/A')}")
     print(f"Iterations: {args.iterations}, Mode: {args.mode}")
-
 ```
-Refer to the [Gooey documentation](https://github.com/chriskiehl/Gooey) for a detailed list of all available decorator arguments and `gooey_options` for widgets.
 
-### 2. `ezgooey.logging`: Colorful and GUI-Friendly Logging
+See [Gooey documentation](https://github.com/chriskiehl/Gooey) for all decorator options.
 
-`ezgooey.logging` provides a simple way to set up colorful logging that works well in both standard terminals and Gooey's rich text console display.
-
-**Simple Usage:**
-
-Initialize the logger once, typically at the start of your application.
+### 2. `ezgooey.logging`: Colored, GUI-friendly logs
 
 ```python
-# In your main script (e.g., at the beginning)
+# Initialize once at app start
 import ezgooey.logging as logging
-logging.init(level=logging.INFO) # Or logging.DEBUG, etc.
+logging.init(level=logging.INFO)
 
-# Later in your code (in the same file or others)
-import logging # Use the standard logging module
+# Use anywhere in your code
+import logging
 logging.info('This is an info message.')
 logging.warning('This is a warning.')
 logging.error('This is an error!')
-logging.success('Operation completed successfully!') # Custom level
+logging.success('Operation completed successfully!')  # Custom level
 ```
 
-**Advanced Usage (Named Loggers):**
-
-For more complex applications or libraries, you can use named loggers.
+**Named loggers for larger applications:**
 
 ```python
-# In your main script (e.g., at the beginning)
-import ezgooey.logging as ez_logging # Alias to avoid conflict
+# At app start
+import ezgooey.logging as ez_logging
 ez_logging.init(level=ez_logging.INFO)
 
-# In other modules or parts of your app:
+# In other modules
 import ezgooey.logging as ez_logging
-log = ez_logging.logger('my_module_name') # Get a named logger
+log = ez_logging.logger('my_module_name')
 
 log.info('Info message from my_module.')
 log.warning('Warning from my_module.')
 log.success('Task in my_module succeeded.')
 ```
 
-**Log Levels:**
+**Log levels:**
+Standard levels plus `SUCCESS` for positive feedback. Output is color-coded by severity.
 
-Besides standard levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`), `ezgooey.logging` adds:
-*   `SUCCESS`: For positive feedback (e.g., operation completed).
+## How It Works
 
-The output is color-coded for severity.
+### `ezgooey.ez`
 
-## Technical Details
+1.  **Conditional import:** Imports `gooey` only when needed
+2.  **Mode detection:** Uses GUI mode when Gooey is available and no CLI args given
+3.  **Monkey-patching:** Extends `argparse` methods to accept Gooey-specific options (`widget`, `gooey_options`) without breaking CLI mode
 
-### How `ezgooey.ez` Works
+Example: `parser.add_argument(..., widget='FileChooser')` works in both modes.
 
-The `ezgooey.ez` module is designed to be a drop-in enhancement for `argparse`.
+### `ezgooey.logging`
 
-1.  **Conditional Import:** It attempts to import `gooey`. If `gooey` is not installed or if command-line arguments (`sys.argv[1:]`) are present, `ezgooey` ensures that the application behaves like a standard CLI tool.
-2.  **Decorator Logic:**
-    *   If Gooey mode is active (Gooey is available and no CLI args), the `@ezgooey` decorator uses `gooey.Gooey` to transform the `ArgumentParser` function into a GUI. The `ArgumentParser` used in this case is `gooey.GooeyParser`.
-    *   If CLI mode is active, the `@ezgooey` decorator essentially becomes a pass-through, and the standard `argparse.ArgumentParser` is used.
-3.  **Monkey-Patching `argparse`:** To allow you to use Gooey-specific options (like `widget` or `gooey_options`) directly within your `ArgumentParser`'s `add_argument`, `add_argument_group`, and `add_mutually_exclusive_group` calls without breaking CLI mode, `ezgooey.ez` performs a bit of "monkey-patching." It wraps these methods of `argparse._ActionsContainer`. The wrapped versions will simply ignore Gooey-specific keyword arguments if Gooey is not active. This means you can define your parser once with all the Gooey enhancements, and it will work seamlessly in both GUI and CLI environments.
+Configures Python's standard logging with:
+*   Colored output using the `colored` library
+*   Rich text formatting compatible with Gooey's console
+*   Unbuffered output for immediate GUI feedback
+*   Custom `SUCCESS` level with green text
+*   `init()` function for one-time setup
+*   `logger()` function that adds `success()` method to loggers
 
-    For example, `parser.add_argument(..., widget='FileChooser', gooey_options={...})` will use these options in GUI mode but ignore `widget` and `gooey_options` in CLI mode.
+## Project Structure
 
-### How `ezgooey.logging` Works
+```
+ezgooey/
+├── ezgooey/
+│   ├── __init__.py   # Package initialisation, version
+│   ├── ez.py         # Core decorator logic, monkey-patching
+│   └── logging.py    # Colored logging setup
+├── tests/
+│   ├── test_ez.py
+│   ├── test_integration.py
+│   ├── test_logging.py
+│   └── test_version.py
+├── docs/
+│   └── index.md      # Jekyll documentation site
+├── pyproject.toml    # Build (hatchling + hatch-vcs), ruff, mypy, pytest config
+├── README.md         # This file
+├── CHANGELOG.md      # Version history
+└── LICENSE           # MIT license
+```
 
-The `ezgooey.logging` module configures the standard Python `logging` system with a custom formatter and stream handler to provide:
+## Dependencies
 
-*   **Colored Output:** Uses the `colored` library to add distinct colors to log messages based on their severity (e.g., red for errors, green for success).
-*   **Gooey Compatibility:** The formatting is designed to render correctly in Gooey's built-in console, which supports rich text.
-*   **Unbuffered Output:** Sets `sys.stdout` to be unbuffered to ensure messages appear immediately, which is important for GUI feedback.
-*   **`init()` function:** A convenience function to apply the basic configuration (`basicConfig`), set up custom level names and their styles (colors).
-*   **`logger()` function:** Returns a standard Python logger instance (via `logging.getLogger(name)`) but also adds a `success` method to it for the custom `SUCCESS` level.
+*   [Gooey](https://github.com/chriskiehl/Gooey) - GUI generation
+*   [wxPython](https://wxpython.org/) - GUI toolkit (required by Gooey)
+*   [colored](https://pypi.org/project/colored/) - Terminal colors
 
-### Project Structure
-
-*   `ezgooey/`: Main package directory.
-    *   `__init__.py`: Initializes the package, defines `__version__`.
-    *   `ez.py`: Contains the core `@ezgooey` decorator logic and `argparse` monkey-patching.
-    *   `logging.py`: Provides the colorful logging setup.
-*   `setup.py`: Standard script for packaging and distribution.
-*   `requirements.txt`: Lists runtime dependencies.
-*   `README.md`: This file.
-*   `LICENSE`: Contains the MIT license text.
-*   `dist.sh`: Utility script for creating distributions and publishing releases.
-
-### Dependencies
-
-`ezgooey` relies on the following main libraries:
-
-*   [Gooey](https://github.com/chriskiehl/Gooey): For the core GUI generation.
-*   [wxPython](https://wxpython.org/): The GUI toolkit Gooey uses (required by Gooey).
-*   [colored](https://pypi.org/project/colored/): For adding colors to terminal log output.
-
-These are automatically installed when you install `ezgooey` via pip.
+Installed automatically with pip.
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions, bug reports, or feature requests, please open an issue on the [GitHub repository](https://github.com/twardoch/ezgooey).
+Issues and pull requests welcome at [GitHub repository](https://github.com/twardoch/ezgooey).
 
-### Coding Conventions
+### Development Setup
 
-*   Please follow PEP 8 style guidelines for Python code.
-*   Ensure your code is well-commented, especially for complex logic.
-
-### Development Setup (Simplified)
-
-1.  Clone the repository.
-2.  It's recommended to work in a virtual environment.
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
-3.  Install dependencies, including development tools:
-    ```bash
-    pip install -r requirements.txt
-    pip install twine wheel # For distribution
-    ```
-
-### Building and Distributing
-
-The `dist.sh` script in the repository is used by the maintainer to create new releases and publish them to PyPI and GitHub. It handles versioning, building wheels/sdist, tagging, and uploading.
-
-For local testing of packaging:
 ```bash
-python setup.py sdist bdist_wheel
+pip install hatch
+hatch env create
+hatch run pytest          # run test suite (29 tests)
+hatch run ruff check .    # lint
+hatch run mypy ezgooey/   # type-check
 ```
-This will create distribution files in the `dist/` directory.
 
-(Note: The project currently does not have an automated test suite. Contributions in this area would be particularly valuable.)
+### Building
 
-### Version History
+```bash
+hatch build               # produces sdist + wheel in dist/
+```
 
-For a detailed history of changes, please refer to the [GitHub Releases page](https://github.com/twardoch/ezgooey/releases).
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) and [GitHub Releases](https://github.com/twardoch/ezgooey/releases).
 
 ## License
 
-`ezgooey` is licensed under the terms of the [MIT License](./LICENSE).
-Copyright © 2020-2023 Adam Twardoch.
-
----
-
-*This README was enhanced with the assistance of an AI coding tool.*
+MIT License. Copyright © 2020-2023 Adam Twardoch.

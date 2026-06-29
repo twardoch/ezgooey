@@ -83,13 +83,27 @@ class Unbuffered:
         return getattr(self.stream, attr)
 
 
-def init(level=INFO, format="%(levelname)s%(message)s"):
+def init(level: int = INFO, format: str = "%(levelname)s%(message)s") -> None:
+    """Initialize colored logging compatible with Gooey's rich-text console.
+
+    Sets up the root logger with color-coded level names and unbuffered stdout.
+    Safe to call multiple times; subsequent calls update the log level even after
+    the first call has already installed handlers (working around the standard
+    ``basicConfig`` one-shot behaviour).
+
+    Args:
+        level: Root logging level (default ``logging.INFO``).
+        format: Log format string (default suppresses the level prefix for INFO).
+    """
     sys.stdout = Unbuffered(sys.stdout)
 
     basicConfig(
         level=level,
         format=format,
     )
+    # basicConfig is a no-op when handlers already exist, so always force the
+    # level on the root logger so repeated init() calls behave predictably.
+    getLogger().setLevel(level)
     addLevelName(DEBUG, stylize("# [DEBUG] ", fg("grey_30")))
     addLevelName(INFO, "")
     addLevelName(WARNING, stylize("# [WARNING] ", fg("dark_orange")))
@@ -98,7 +112,27 @@ def init(level=INFO, format="%(levelname)s%(message)s"):
     addLevelName(SUCCESS, stylize("# [SUCCESS] ", fg("green") + attr("bold")))
 
 
-def logger(name="app"):
+def logger(name: str = "app") -> "Logger":
+    """Return a named logger augmented with a ``success()`` method.
+
+    The returned logger behaves like a standard :class:`logging.Logger` but
+    gains a ``success(message)`` method that logs at the custom ``SUCCESS``
+    level (25), displayed in green when :func:`init` has been called.
+
+    Args:
+        name: Logger name (default ``"app"``).
+
+    Returns:
+        A :class:`logging.Logger` instance with an extra ``success`` attribute.
+
+    Example::
+
+        import ezgooey.logging as logging
+        logging.init()
+        log = logging.logger("my_app")
+        log.info("starting…")
+        log.success("all done")
+    """
     log = getLogger(name)
     setattr(log, "success", lambda message, *args: log._log(SUCCESS, message, args))
     return log
