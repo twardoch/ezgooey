@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Users/adam/Developer/vcs3/github.twardoch/pub/writwist && uv cache clean writwist --force 2>&1 && rm -rf .venv && uv run --with pytest pytest tests/ -v 2>&1\",\"timeout\":90000,\"descripti...",
+  "error": "Exit code 1\nNo cache entries found\nUsing CPython 3.12.12\nCreating virtual environment at: .venv\nInstalled 8 packages in 5ms\n============================= test session starts ==============================\nplatform darwin -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0 -- /Users/adam/.cache/uv/builds-v0/.tmpSuxr1m/bin/python\ncachedir: .pytest_cache\nrootdir: /Users/adam/Developer/vcs3/github.twardoch/pub/writwist\nconfigfile: pyproject.toml\ncollecting ... collected 5 items\n\ntests/test_writwist.py::te...",
+  "timestamp": "2026-06-29T03:53:48.096Z",
+  "retry_count": 2
+}

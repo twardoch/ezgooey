@@ -2,9 +2,41 @@
   "version": 1,
   "entries": {
     "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
-      "last_emitted_at_ms": 1782704730129,
+      "last_emitted_at_ms": 1782705827771,
       "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1782705198202,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1782705150658,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
+    "8639b70b1d6b0a88f958b4abd061eb8515fb0fc434ca5836e088b8be020df8a1": {
+      "last_emitted_at_ms": 1782704902675,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green huehoppy"
+    },
+    "89fe5ad679e4ff9a93bfa4b48f90dc0d61368eeb3d0fc7d6180bc622d1d32466": {
+      "last_emitted_at_ms": 1782704898646,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green nolana"
+    },
+    "9a4a30d51a70ccd5e1fc9c9f7f559a02e61732db92ead7c87f19403504a4bb45": {
+      "last_emitted_at_ms": 1782704895284,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green writwist"
+    },
+    "2e170a6f37161af8ffe91ba33931f7b767f07ba1b41f2f691aa9d7fc3c9f0323": {
+      "last_emitted_at_ms": 1782704891073,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green markdownlp"
+    },
+    "58099a04f588fa02b3484206b1ced1c217656322bf273ff131de5826e92a14a6": {
+      "last_emitted_at_ms": 1782704884930,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green tscprojpy"
+    },
+    "796705720d81586b5ee354b51fcc374fb76b86a39b09053ed3e1576401838662": {
+      "last_emitted_at_ms": 1782704880691,
+      "message": "Spawning agent: oh-my-claudecode:executor (sonnet) | Task: Finish-to-green camtasio"
     }
   },
-  "updated_at": "2026-06-29T03:45:30.129Z"
+  "updated_at": "2026-06-29T04:03:47.771Z"
 }
