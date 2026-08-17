@@ -108,3 +108,5 @@ venv.bak/
 .mypy_cache/
 
 app/build/
+.omc/
+.DS_Store
