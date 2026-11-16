@@ -110,3 +110,4 @@ venv.bak/
 app/build/
 .omc/
 .DS_Store
+ezgooey/_version.py
